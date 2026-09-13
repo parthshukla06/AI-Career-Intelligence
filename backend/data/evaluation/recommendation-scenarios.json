@@ -1,0 +1,59 @@
+[
+  {
+    "name": "JavaScript backend beginner",
+    "candidate": {
+      "name": null,
+      "email": null,
+      "phone": null,
+      "location": null,
+      "summary": "Entry-level developer interested in backend software engineering",
+      "skills": ["JavaScript", "Node.js", "MongoDB", "REST APIs", "Git"],
+      "experience": [],
+      "education": [],
+      "projects": [],
+      "certifications": [],
+      "totalExperience": 0,
+      "targetRoles": ["Backend Engineer", "Software Engineer"]
+    },
+    "expectedRelevantJobs": ["Junior Software Engineer", "Backend Engineer"],
+    "expectedOrdering": ["Junior Software Engineer", "Backend Engineer"]
+  },
+  {
+    "name": "Python machine learning candidate",
+    "candidate": {
+      "name": null,
+      "email": null,
+      "phone": null,
+      "location": null,
+      "summary": "Python developer building machine learning models",
+      "skills": ["Python", "Machine Learning", "scikit-learn", "SQL", "Docker"],
+      "experience": [],
+      "education": [],
+      "projects": [],
+      "certifications": [],
+      "totalExperience": 3,
+      "targetRoles": ["Machine Learning Engineer"]
+    },
+    "expectedRelevantJobs": ["Machine Learning Engineer", "Risk Analyst", "Data Engineer"],
+    "expectedOrdering": ["Machine Learning Engineer"]
+  },
+  {
+    "name": "Analytics candidate with partial skills",
+    "candidate": {
+      "name": null,
+      "email": null,
+      "phone": null,
+      "location": null,
+      "summary": "Analyst working with business data and reporting",
+      "skills": ["SQL", "Python", "Statistics"],
+      "experience": [],
+      "education": [],
+      "projects": [],
+      "certifications": [],
+      "totalExperience": 1,
+      "targetRoles": ["Data Analyst"]
+    },
+    "expectedRelevantJobs": ["Data Analyst", "Risk Analyst"],
+    "expectedOrdering": ["Data Analyst"]
+  }
+]

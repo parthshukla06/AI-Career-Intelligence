@@ -1,0 +1,22 @@
+import { Router } from "express";
+import { requireAuth } from "../middleware/auth";
+import { application, applications, careerGoal, dashboard, feedback, learning, learningProgress, personalized, personalizedGaps, progressRoadmap, removeSave, save, saved, updateApplicationStatus, updateLearning } from "../controllers/user.controller";
+
+const router = Router();
+router.use(requireAuth);
+router.post("/me/saved-jobs/:jobId", save);
+router.delete("/me/saved-jobs/:jobId", removeSave);
+router.get("/me/saved-jobs", saved);
+router.post("/me/applications", application);
+router.patch("/me/applications/:jobId", updateApplicationStatus);
+router.get("/me/applications", applications);
+router.post("/me/job-feedback/:jobId", feedback);
+router.patch("/me/career-goal", careerGoal);
+router.post("/me/learning-progress", learning);
+router.patch("/me/learning-progress/:skill", updateLearning);
+router.get("/me/learning-progress", learningProgress);
+router.get("/me/dashboard", dashboard);
+router.get("/me/personalized-skill-gaps/:resumeId", personalizedGaps);
+router.get("/me/progress-roadmap/:resumeId", progressRoadmap);
+router.get("/me/personalized-recommendations/:resumeId", personalized);
+export default router;

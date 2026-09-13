@@ -1,0 +1,16 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-5000}:5000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 5000
+      MONGODB_URI: ${MONGODB_URI:?Set MONGODB_URI in the environment}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in the environment}
+      GROQ_API_KEY: ${GROQ_API_KEY:?Set GROQ_API_KEY in the environment}
+      GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-120b}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    restart: unless-stopped
