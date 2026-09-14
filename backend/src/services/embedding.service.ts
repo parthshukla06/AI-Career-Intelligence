@@ -1,4 +1,10 @@
-import { pipeline, type FeatureExtractionPipeline } from "@huggingface/transformers";
+import {
+  env,
+  pipeline,
+  type FeatureExtractionPipeline,
+} from "@huggingface/transformers";
+
+env.cacheDir = "/tmp/transformers-cache";
 import { IJob } from "../models/Job";
 import { CandidateProfile } from "../types/candidateProfile";
 import { candidateEmbeddingText, jobEmbeddingText } from "./embeddingText.service";
