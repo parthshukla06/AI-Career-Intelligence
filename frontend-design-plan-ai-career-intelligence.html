@@ -1,0 +1,527 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Frontend Design Plan — AI Career Intelligence</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; color: #1f2328; background: #ffffff; padding: 32px 16px 48px; }
+  .page { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 28px; }
+  h2 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; padding-bottom: 4px; border-bottom: 1px solid #e5e7eb; }
+  h3 { font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  p { margin-bottom: 8px; }
+  ul, ol { padding-left: 20px; margin-bottom: 8px; }
+  li { margin-bottom: 3px; }
+  code { font-family: "Cascadia Code","Fira Mono",monospace; font-size: 12px; background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 3px; padding: 1px 5px; }
+  pre { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 16px; font-size: 12px; line-height: 1.7; overflow-x: auto; margin-bottom: 12px; font-family: "Cascadia Code","Fira Mono",monospace; white-space: pre; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  th { background: #f7f8fa; text-align: left; padding: 6px 10px; border: 1px solid #e5e7eb; font-weight: 600; color: #57606a; }
+  td { padding: 6px 10px; border: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  .card { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 16px; margin-bottom: 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 10px; margin-right: 4px; margin-bottom: 3px; }
+  .tag-blue { background: #dbeafe; color: #1d4ed8; }
+  .tag-green { background: #dcfce7; color: #166534; }
+  .tag-yellow { background: #fef9c3; color: #854d0e; }
+  .tag-purple { background: #ede9fe; color: #5b21b6; }
+  .tag-gray { background: #f3f4f6; color: #374151; }
+  .tag-red { background: #fee2e2; color: #991b1b; }
+  .step { display: flex; gap: 14px; margin-bottom: 14px; }
+  .step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #3b82d4; color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .badge { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 3px; font-weight: 600; margin-left: 6px; vertical-align: middle; }
+  .badge-auth { background: #fef9c3; color: #854d0e; }
+  .badge-pub { background: #dcfce7; color: #166534; }
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
+  footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #57606a; }
+  @media (max-width: 540px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Frontend Design Plan</h1>
+  <p class="subtitle">AI Career Intelligence Platform — React + TypeScript frontend. No files created. Awaiting approval.</p>
+
+  
+  <h2>1. Recommended Technology Stack</h2>
+  <div class="grid2">
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:8px">Core</div>
+      <ul>
+        <li><span class="tag tag-blue">React 18</span> UI library</li>
+        <li><span class="tag tag-blue">TypeScript 5</span> type safety</li>
+        <li><span class="tag tag-blue">Vite 5</span> dev server + bundler</li>
+        <li><span class="tag tag-blue">React Router v6</span> client routing</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:8px">Styling</div>
+      <ul>
+        <li><span class="tag tag-purple">Tailwind CSS v3</span> utility-first</li>
+        <li><span class="tag tag-purple">shadcn/ui</span> accessible headless components</li>
+        <li><span class="tag tag-purple">lucide-react</span> icon set</li>
+        <li><span class="tag tag-purple">clsx + tailwind-merge</span> class helpers</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:8px">Data &amp; State</div>
+      <ul>
+        <li><span class="tag tag-green">TanStack Query v5</span> server state + caching</li>
+        <li><span class="tag tag-green">Zustand</span> lightweight client state (auth)</li>
+        <li><span class="tag tag-green">Axios</span> HTTP client with interceptors</li>
+        <li><span class="tag tag-green">react-hook-form + zod</span> forms + validation</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:8px">DX &amp; Quality</div>
+      <ul>
+        <li><span class="tag tag-yellow">ESLint + Prettier</span> linting &amp; formatting</li>
+        <li><span class="tag tag-yellow">Vitest + React Testing Library</span></li>
+        <li><span class="tag tag-yellow">react-pdf</span> in-browser PDF preview</li>
+        <li><span class="tag tag-yellow">recharts</span> skill-gap &amp; readiness charts</li>
+      </ul>
+    </div>
+  </div>
+  <p><strong>Why this stack?</strong> Vite gives instant HMR. Tailwind + shadcn avoids a heavy component framework while keeping full design control. TanStack Query handles all API caching/loading/error states, eliminating the need for complex Redux slices. Zustand holds only auth token + user. Zod reuses the same schema shapes as the backend.</p>
+
+  
+  <h2>2. Folder Structure</h2>
+  <pre>
+frontend/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── api/                      # one file per backend resource
+│   │   ├── client.ts             # axios instance, base URL, interceptors
+│   │   ├── auth.api.ts
+│   │   ├── jobs.api.ts
+│   │   ├── resumes.api.ts
+│   │   ├── recommendations.api.ts
+│   │   ├── career.api.ts
+│   │   ├── assistant.api.ts
+│   │   └── user.api.ts
+│   ├── components/
+│   │   ├── ui/                   # shadcn primitives (Button, Card, Badge…)
+│   │   ├── layout/
+│   │   │   ├── AppShell.tsx      # sidebar + topbar wrapper
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── TopBar.tsx
+│   │   │   └── MobileNav.tsx
+│   │   ├── auth/
+│   │   │   └── ProtectedRoute.tsx
+│   │   ├── jobs/
+│   │   │   ├── JobCard.tsx
+│   │   │   ├── JobFilters.tsx
+│   │   │   └── JobDetailPanel.tsx
+│   │   ├── resume/
+│   │   │   ├── ResumeUploader.tsx
+│   │   │   └── CandidateProfileCard.tsx
+│   │   ├── recommendations/
+│   │   │   ├── RecommendationCard.tsx
+│   │   │   └── MatchScoreBar.tsx
+│   │   ├── career/
+│   │   │   ├── SkillGapList.tsx
+│   │   │   ├── ReadinessGauge.tsx
+│   │   │   ├── RoadmapTimeline.tsx
+│   │   │   └── WhatIfSimulator.tsx
+│   │   ├── assistant/
+│   │   │   ├── ChatWindow.tsx
+│   │   │   └── ChatMessage.tsx
+│   │   └── dashboard/
+│   │       ├── StatsRow.tsx
+│   │       └── NextActionsPanel.tsx
+│   ├── hooks/
+│   │   ├── useAuth.ts            # auth state selectors
+│   │   ├── useResume.ts          # resume context helper
+│   │   └── useDebounce.ts
+│   ├── pages/
+│   │   ├── auth/
+│   │   │   ├── LoginPage.tsx
+│   │   │   └── RegisterPage.tsx
+│   │   ├── JobsPage.tsx
+│   │   ├── JobDetailPage.tsx
+│   │   ├── ResumeUploadPage.tsx
+│   │   ├── RecommendationsPage.tsx
+│   │   ├── CareerOverviewPage.tsx
+│   │   ├── SkillGapsPage.tsx
+│   │   ├── WhatIfPage.tsx
+│   │   ├── AssistantPage.tsx
+│   │   ├── DashboardPage.tsx
+│   │   ├── ProfilePage.tsx
+│   │   └── LandingPage.tsx
+│   ├── store/
+│   │   └── authStore.ts          # Zustand: token, user, resumeId
+│   ├── types/
+│   │   ├── api.ts                # shared response envelope
+│   │   ├── job.ts
+│   │   ├── resume.ts
+│   │   ├── recommendation.ts
+│   │   ├── career.ts
+│   │   └── user.ts
+│   ├── lib/
+│   │   └── utils.ts              # clsx/twMerge helper, formatters
+│   ├── App.tsx                   # router + query client provider
+│   └── main.tsx                  # React root
+├── index.html
+├── tailwind.config.ts
+├── tsconfig.json
+├── vite.config.ts
+└── package.json</pre>
+
+  
+  <h2>3. Pages / Screens</h2>
+  <table>
+    <tr><th>Page</th><th>Route</th><th>Auth</th><th>Backend endpoints used</th></tr>
+    <tr><td><strong>Landing</strong></td><td><code>/</code></td><td><span class="badge badge-pub">public</span></td><td>—</td></tr>
+    <tr><td><strong>Login</strong></td><td><code>/login</code></td><td><span class="badge badge-pub">public</span></td><td><code>POST /api/auth/login</code></td></tr>
+    <tr><td><strong>Register</strong></td><td><code>/register</code></td><td><span class="badge badge-pub">public</span></td><td><code>POST /api/auth/register</code></td></tr>
+    <tr><td><strong>Jobs Board</strong></td><td><code>/jobs</code></td><td><span class="badge badge-pub">public</span></td><td><code>GET /api/jobs</code> (filters: title, industry, experienceLevel, workMode, location, skills)</td></tr>
+    <tr><td><strong>Job Detail</strong></td><td><code>/jobs/:id</code></td><td><span class="badge badge-pub">public</span></td><td><code>GET /api/jobs/:id</code></td></tr>
+    <tr><td><strong>Resume Upload</strong></td><td><code>/resume</code></td><td><span class="badge badge-pub">public</span></td><td><code>POST /api/resumes/upload</code>, <code>GET /api/resumes/:id</code></td></tr>
+    <tr><td><strong>Recommendations</strong></td><td><code>/recommendations</code></td><td>optional</td><td><code>GET /api/recommendations/:resumeId</code> (anonymous) or <code>GET /api/users/me/personalized-recommendations/:resumeId</code> (auth)</td></tr>
+    <tr><td><strong>Career Overview</strong></td><td><code>/career</code></td><td><span class="badge badge-pub">public</span></td><td><code>GET /api/career/:resumeId</code></td></tr>
+    <tr><td><strong>Skill Gaps</strong></td><td><code>/career/gaps</code></td><td>optional</td><td><code>GET /api/career/:resumeId/skill-gaps</code>, <code>GET /api/users/me/personalized-skill-gaps/:resumeId</code> (auth)</td></tr>
+    <tr><td><strong>What-If</strong></td><td><code>/career/what-if</code></td><td><span class="badge badge-pub">public</span></td><td><code>GET /api/career/what-if/:resumeId?skills=…</code></td></tr>
+    <tr><td><strong>Career Assistant</strong></td><td><code>/assistant</code></td><td><span class="badge badge-pub">public</span></td><td><code>POST /api/career-assistant/chat</code>, <code>GET /api/career-assistant/roadmap/:resumeId</code>, <code>POST /api/career-assistant/resume-improvement/:resumeId</code>, <code>GET /api/career-assistant/career-paths/:resumeId</code></td></tr>
+    <tr><td><strong>Dashboard</strong></td><td><code>/dashboard</code></td><td><span class="badge badge-auth">auth</span></td><td><code>GET /api/users/me/dashboard</code></td></tr>
+    <tr><td><strong>Profile / Preferences</strong></td><td><code>/profile</code></td><td><span class="badge badge-auth">auth</span></td><td><code>GET /api/auth/me</code>, <code>PATCH /api/users/me/career-goal</code></td></tr>
+    <tr><td><strong>Saved Jobs</strong></td><td><code>/saved-jobs</code> (tab in Dashboard)</td><td><span class="badge badge-auth">auth</span></td><td><code>GET /api/users/me/saved-jobs</code>, <code>DELETE /api/users/me/saved-jobs/:jobId</code></td></tr>
+    <tr><td><strong>Applications</strong></td><td><code>/applications</code> (tab in Dashboard)</td><td><span class="badge badge-auth">auth</span></td><td><code>GET /api/users/me/applications</code>, <code>PATCH /api/users/me/applications/:jobId</code></td></tr>
+    <tr><td><strong>Learning Progress</strong></td><td><code>/learning</code> (tab in Dashboard)</td><td><span class="badge badge-auth">auth</span></td><td><code>GET/POST /api/users/me/learning-progress</code>, <code>PATCH /api/users/me/learning-progress/:skill</code></td></tr>
+  </table>
+
+  
+  <h2>4. Reusable Components</h2>
+
+  <h3>Layout</h3>
+  <ul>
+    <li><code>AppShell</code> — responsive shell: collapsible sidebar on desktop, bottom sheet on mobile</li>
+    <li><code>Sidebar</code> — nav links with active state, collapsed icon-only mode at md breakpoint</li>
+    <li><code>TopBar</code> — breadcrumb + resume context picker + user avatar menu</li>
+    <li><code>MobileNav</code> — bottom tab bar for mobile (&lt;640px)</li>
+  </ul>
+
+  <h3>Auth</h3>
+  <ul>
+    <li><code>ProtectedRoute</code> — wraps routes that require JWT; redirects to <code>/login</code> if unauthenticated</li>
+  </ul>
+
+  <h3>Jobs</h3>
+  <ul>
+    <li><code>JobCard</code> — title, company, location, work-mode badge, salary range, save button (if authed), apply status pill</li>
+    <li><code>JobFilters</code> — controlled form: text search, industry select, experience level, work mode, location</li>
+    <li><code>JobDetailPanel</code> — full job description, required/preferred skills, responsibilities, action buttons</li>
+  </ul>
+
+  <h3>Resume</h3>
+  <ul>
+    <li><code>ResumeUploader</code> — drag-and-drop zone, file validation (PDF ≤ 5 MB), upload progress, error display, stores returned <code>resumeId</code></li>
+    <li><code>CandidateProfileCard</code> — renders parsed <code>CandidateProfile</code>: name, skills chips, experience list, projects, education</li>
+  </ul>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li><code>RecommendationCard</code> — overall score, matched skills, missing skills, experience assessment, personalization boost badge (if authed)</li>
+    <li><code>MatchScoreBar</code> — horizontal bar with color gradient for 0–100 match score</li>
+  </ul>
+
+  <h3>Career Intelligence</h3>
+  <ul>
+    <li><code>SkillGapList</code> — grouped by priority (HIGH/MEDIUM/LOW), progress overlay if authed</li>
+    <li><code>ReadinessGauge</code> — recharts RadialBar showing readiness score, level badge, strengths &amp; gaps summary</li>
+    <li><code>RoadmapTimeline</code> — 3-phase vertical timeline with skills, projects, interview prep per phase</li>
+    <li><code>WhatIfSimulator</code> — chip-based skill adder, before/after score delta table</li>
+    <li><code>SkillDemandChart</code> — recharts BarChart of top demanded skills from <code>/api/career/skill-demand</code></li>
+    <li><code>ExperienceCategoryTabs</code> — Strong Fit / Possible Fit / Stretch Role tabs from experience recommendations</li>
+  </ul>
+
+  <h3>Career Assistant</h3>
+  <ul>
+    <li><code>ChatWindow</code> — full-height chat UI, auto-scroll, loading bubble, sources accordion</li>
+    <li><code>ChatMessage</code> — user vs assistant bubble, markdown rendering, source list</li>
+    <li><code>CareerPathCard</code> — path title, why-it-fits, strengths, gaps, recommended next skills</li>
+  </ul>
+
+  <h3>Dashboard</h3>
+  <ul>
+    <li><code>StatsRow</code> — saved jobs count, applications count, readiness score, learning items</li>
+    <li><code>NextActionsPanel</code> — action items list from dashboard response</li>
+    <li><code>ApplicationKanban</code> — drag-able Kanban columns: interested → applied → interview → rejected / offer</li>
+    <li><code>LearningProgressBar</code> — skill row with status select + 0–100 slider</li>
+  </ul>
+
+  <h3>Shared UI primitives (shadcn-based)</h3>
+  <ul>
+    <li><code>Button</code>, <code>Input</code>, <code>Badge</code>, <code>Card</code>, <code>Select</code>, <code>Tabs</code>, <code>Dialog</code>, <code>Tooltip</code>, <code>Skeleton</code>, <code>Toast</code>, <code>Spinner</code>, <code>EmptyState</code>, <code>ErrorBoundary</code></li>
+  </ul>
+
+  
+  <h2>5. API Integration Strategy</h2>
+
+  <h3>5a. Axios client (<code>src/api/client.ts</code>)</h3>
+  <ul>
+    <li>Base URL from <code>VITE_API_URL</code> env var (defaults to <code>http://localhost:5000</code>).</li>
+    <li>Request interceptor reads JWT from Zustand store and attaches <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+    <li>Response interceptor catches 401 → clears auth store → redirects to <code>/login</code>.</li>
+  </ul>
+
+  <h3>5b. TanStack Query hooks (per resource file)</h3>
+  <ul>
+    <li>Every API call becomes a typed <code>useQuery</code> or <code>useMutation</code>. Loading/error states are handled at component level via skeleton or error card.</li>
+    <li>Query keys follow the pattern <code>["jobs", filters]</code>, <code>["recommendations", resumeId]</code>, etc. to enable targeted cache invalidation.</li>
+    <li>Resume upload is a <code>useMutation</code> with <code>onSuccess</code> setting <code>resumeId</code> in Zustand and invalidating dependent queries.</li>
+  </ul>
+
+  <h3>5c. Exact response envelope</h3>
+  <p>All backend responses follow <code>{ success: boolean, data?: T, message?: string, count?: number }</code>. A shared <code>ApiResponse&lt;T&gt;</code> TypeScript type wraps every endpoint's return type.</p>
+
+  <h3>5d. No invented endpoints</h3>
+  <p>The frontend only calls endpoints confirmed in the backend codebase. Personalized variants are only invoked when a JWT token is present in the store.</p>
+
+  
+  <h2>6. Authentication Strategy</h2>
+  <table>
+    <tr><th>Concern</th><th>Implementation</th></tr>
+    <tr><td>Token storage</td><td><code>localStorage</code> — persisted across page refreshes. The token never touches React state directly; Zustand reads it from storage on hydration.</td></tr>
+    <tr><td>Auth store (Zustand)</td><td>Fields: <code>token: string | null</code>, <code>user: { id, name, email } | null</code>, <code>resumeId: string | null</code>. Actions: <code>login()</code>, <code>logout()</code>, <code>setResumeId()</code>.</td></tr>
+    <tr><td>Login / Register flow</td><td>Form → <code>POST /api/auth/login</code> (or <code>/register</code>) → on success store <code>token</code> + <code>user</code> → redirect to <code>/dashboard</code>.</td></tr>
+    <tr><td>Protected routes</td><td><code>&lt;ProtectedRoute /&gt;</code> wraps any route requiring auth. Reads from Zustand; unauthenticated → <code>&lt;Navigate to="/login" replace /&gt;</code>.</td></tr>
+    <tr><td>Axios interceptor</td><td>Attaches <code>Bearer</code> token automatically to every request when token exists. 401 responses auto-logout.</td></tr>
+    <tr><td>Rehydration</td><td>On app mount, if token exists in localStorage, fetch <code>GET /api/auth/me</code> to verify it is still valid; on failure, clear storage and redirect.</td></tr>
+    <tr><td>Resume context</td><td>After a successful upload the returned <code>resumeId</code> is stored in Zustand + localStorage. All intelligence and assistant pages read this as their default input.</td></tr>
+  </table>
+
+  
+  <h2>7. State Management Approach</h2>
+  <div class="card">
+    <table style="margin:0">
+      <tr><th>State type</th><th>Tool</th><th>Why</th></tr>
+      <tr><td>Auth token, current user, current resumeId</td><td>Zustand + localStorage</td><td>Tiny, synchronous, persisted — no need for a full store</td></tr>
+      <tr><td>Server data (jobs, recommendations, career, dashboard…)</td><td>TanStack Query</td><td>Automatic caching, background refetch, loading/error states, deduplication</td></tr>
+      <tr><td>Form state (login, register, career-goal, learning progress)</td><td>react-hook-form</td><td>Uncontrolled forms with Zod validation, zero re-renders on change</td></tr>
+      <tr><td>Transient UI state (filter panel open, modal open, chat input)</td><td>local <code>useState</code></td><td>Component-scoped; no need to share</td></tr>
+      <tr><td>What-if skill chips</td><td>local <code>useState</code></td><td>Simple array, no persistence needed</td></tr>
+    </table>
+  </div>
+  <p>There is intentionally <strong>no Redux or Context API</strong>. Zustand replaces the tiny global auth slice; TanStack Query replaces all server-data reducers.</p>
+
+  
+  <h2>8. Step-by-Step Implementation Plan</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Scaffold the Vite + React + TypeScript project</div>
+      <ul>
+        <li>Create <code>frontend/</code> via <code>npm create vite@latest frontend -- --template react-ts</code></li>
+        <li>Install all dependencies (Tailwind, shadcn CLI, TanStack Query, Zustand, Axios, react-hook-form, Zod, react-router-dom, lucide-react, recharts)</li>
+        <li>Configure Tailwind, ESLint, Prettier, <code>tsconfig.json</code>, <code>vite.config.ts</code></li>
+        <li>Add <code>.env</code> and <code>.env.example</code> with <code>VITE_API_URL</code></li>
+        <li>Update root <code>docker-compose.yml</code> to optionally include a <code>frontend</code> service</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">API layer + TypeScript types</div>
+      <ul>
+        <li>Write <code>src/api/client.ts</code> with Axios instance, request interceptor (Bearer token), response interceptor (401 → logout)</li>
+        <li>Define all TypeScript types in <code>src/types/</code> matching exact backend response shapes</li>
+        <li>Implement all API module files (<code>auth.api.ts</code>, <code>jobs.api.ts</code>, <code>resumes.api.ts</code>, <code>recommendations.api.ts</code>, <code>career.api.ts</code>, <code>assistant.api.ts</code>, <code>user.api.ts</code>)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">Auth store + routing skeleton</div>
+      <ul>
+        <li>Create Zustand store with <code>token</code>, <code>user</code>, <code>resumeId</code> persisted to localStorage</li>
+        <li>Build <code>App.tsx</code> with React Router v6: all routes, <code>ProtectedRoute</code> wrapper, <code>QueryClientProvider</code></li>
+        <li>Add startup <code>GET /api/auth/me</code> rehydration check in <code>App.tsx</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-title">Layout shell + shared UI primitives</div>
+      <ul>
+        <li>Build <code>AppShell</code>, <code>Sidebar</code>, <code>TopBar</code>, <code>MobileNav</code> (fully responsive)</li>
+        <li>Add shadcn primitives: Button, Input, Badge, Card, Skeleton, Toast, Dialog, Select, Tabs, Tooltip</li>
+        <li>Build <code>EmptyState</code> and <code>ErrorBoundary</code> shared components</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <div class="step-title">Landing, Login, Register pages</div>
+      <ul>
+        <li>Landing: hero with CTA to upload resume or browse jobs (no auth required)</li>
+        <li>Login/Register: react-hook-form + Zod validation, calls <code>/api/auth/login</code> and <code>/api/auth/register</code>, stores token on success</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <div class="step-title">Resume Upload page</div>
+      <ul>
+        <li><code>ResumeUploader</code> component: drag-and-drop + click, PDF-only, ≤ 5 MB, multipart form-data to <code>POST /api/resumes/upload</code></li>
+        <li>On success: store <code>resumeId</code> in Zustand, display parsed <code>CandidateProfileCard</code></li>
+        <li>Error states: configuration error (503), provider error (502), oversized (413), invalid type (400)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-body">
+      <div class="step-title">Jobs Board + Job Detail pages</div>
+      <ul>
+        <li>Jobs page: <code>JobFilters</code> sidebar + <code>JobCard</code> grid, calls <code>GET /api/jobs</code> with query params</li>
+        <li>Job Detail page: full detail panel, save/unsave button (auth), feedback buttons (auth), apply tracker (auth)</li>
+        <li>Debounced filter inputs, skeleton loading state</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">8</div>
+    <div class="step-body">
+      <div class="step-title">Recommendations page</div>
+      <ul>
+        <li>Requires <code>resumeId</code> — if absent, prompt user to upload resume first</li>
+        <li>Uses personalized endpoint if authed, anonymous otherwise</li>
+        <li>Each <code>RecommendationCard</code> shows overall score + <code>MatchScoreBar</code>, matched skills, missing skills, experience assessment</li>
+        <li>Save-job and feedback buttons visible when authed</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">9</div>
+    <div class="step-body">
+      <div class="step-title">Career Intelligence pages</div>
+      <ul>
+        <li>Career Overview: <code>ReadinessGauge</code> + top recommendations + experience category tabs</li>
+        <li>Skill Gaps: <code>SkillGapList</code> grouped by priority; shows learning progress overlay when authed</li>
+        <li>What-If Simulator: chip input for skill names → calls <code>/api/career/what-if/:resumeId?skills=…</code> → before/after table</li>
+        <li>Skill Demand: <code>SkillDemandChart</code> from <code>GET /api/career/skill-demand</code> (no resumeId needed)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">10</div>
+    <div class="step-body">
+      <div class="step-title">Career Assistant page</div>
+      <ul>
+        <li>Full-height <code>ChatWindow</code>: free-text chat → <code>POST /api/career-assistant/chat</code> with optional <code>resumeId</code></li>
+        <li>Sidebar tabs: Chat, Roadmap (<code>RoadmapTimeline</code>), Resume Improvement, Career Paths (<code>CareerPathCard</code>)</li>
+        <li>Sources accordion shows knowledge-base citations returned by the backend</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">11</div>
+    <div class="step-body">
+      <div class="step-title">Dashboard (auth-gated)</div>
+      <ul>
+        <li><code>StatsRow</code> with saved jobs, applications, readiness score from <code>GET /api/users/me/dashboard</code></li>
+        <li>Tabs: Overview, Saved Jobs, Applications (<code>ApplicationKanban</code>), Learning Progress</li>
+        <li>Application status updates via <code>PATCH /api/users/me/applications/:jobId</code></li>
+        <li>Learning progress rows with status dropdown + progress slider → <code>PATCH /api/users/me/learning-progress/:skill</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">12</div>
+    <div class="step-body">
+      <div class="step-title">Profile / Preferences page (auth-gated)</div>
+      <ul>
+        <li>Displays current user info from <code>GET /api/auth/me</code></li>
+        <li>Edit form for career-goal, targetRoles, preferredIndustries, preferredWorkModes, preferredLocations, experienceLevel, learningGoals, resumeId</li>
+        <li>Saves via <code>PATCH /api/users/me/career-goal</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">13</div>
+    <div class="step-body">
+      <div class="step-title">Responsiveness, polish, and accessibility</div>
+      <ul>
+        <li>Mobile-first Tailwind breakpoints: single-column on <code>sm</code>, 2-col grid on <code>md</code>, sidebar on <code>lg</code></li>
+        <li>ARIA labels, keyboard navigation, focus rings on all interactive elements</li>
+        <li>Toast notifications for save/unsave, feedback, applications, and errors</li>
+        <li>Dark-mode-ready color tokens in Tailwind config (light mode only initially)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">14</div>
+    <div class="step-body">
+      <div class="step-title">Docker + environment config</div>
+      <ul>
+        <li>Add <code>frontend/Dockerfile</code>: multi-stage Vite build → nginx serve</li>
+        <li>Update root <code>docker-compose.yml</code> to add optional <code>frontend</code> service on port 3000</li>
+        <li><code>VITE_API_URL</code> injected at build time via Compose environment</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr />
+  <h2>Quick Reference: Backend URL → Frontend Usage</h2>
+  <table>
+    <tr><th>Backend route</th><th>Where used in frontend</th></tr>
+    <tr><td><code>POST /api/auth/register</code></td><td>RegisterPage form submit</td></tr>
+    <tr><td><code>POST /api/auth/login</code></td><td>LoginPage form submit</td></tr>
+    <tr><td><code>GET /api/auth/me</code></td><td>App hydration + ProfilePage</td></tr>
+    <tr><td><code>GET /api/jobs</code></td><td>JobsPage with filter params</td></tr>
+    <tr><td><code>GET /api/jobs/:id</code></td><td>JobDetailPage</td></tr>
+    <tr><td><code>POST /api/resumes/upload</code></td><td>ResumeUploader component</td></tr>
+    <tr><td><code>GET /api/resumes/:id</code></td><td>CandidateProfileCard after upload</td></tr>
+    <tr><td><code>GET /api/recommendations/:resumeId</code></td><td>RecommendationsPage (anonymous)</td></tr>
+    <tr><td><code>GET /api/career/:resumeId</code></td><td>CareerOverviewPage</td></tr>
+    <tr><td><code>GET /api/career/:resumeId/skill-gaps</code></td><td>SkillGapsPage (anonymous)</td></tr>
+    <tr><td><code>GET /api/career/:resumeId/readiness</code></td><td>CareerOverviewPage ReadinessGauge</td></tr>
+    <tr><td><code>GET /api/career/:resumeId/experience-recommendations</code></td><td>CareerOverviewPage ExperienceCategoryTabs</td></tr>
+    <tr><td><code>GET /api/career/skill-demand</code></td><td>SkillGapsPage SkillDemandChart</td></tr>
+    <tr><td><code>GET /api/career/what-if/:resumeId?skills=…</code></td><td>WhatIfPage</td></tr>
+    <tr><td><code>POST /api/career-assistant/chat</code></td><td>AssistantPage ChatWindow</td></tr>
+    <tr><td><code>GET /api/career-assistant/roadmap/:resumeId</code></td><td>AssistantPage Roadmap tab</td></tr>
+    <tr><td><code>POST /api/career-assistant/resume-improvement/:resumeId</code></td><td>AssistantPage Resume Improvement tab</td></tr>
+    <tr><td><code>GET /api/career-assistant/career-paths/:resumeId</code></td><td>AssistantPage Career Paths tab</td></tr>
+    <tr><td><code>GET /api/users/me/dashboard</code></td><td>DashboardPage</td></tr>
+    <tr><td><code>POST/DELETE/GET /api/users/me/saved-jobs(/:jobId)</code></td><td>JobDetailPage + Dashboard Saved Jobs tab</td></tr>
+    <tr><td><code>POST/PATCH/GET /api/users/me/applications(/:jobId)</code></td><td>JobDetailPage + Dashboard Applications tab</td></tr>
+    <tr><td><code>POST /api/users/me/job-feedback/:jobId</code></td><td>RecommendationCard + JobDetailPage</td></tr>
+    <tr><td><code>PATCH /api/users/me/career-goal</code></td><td>ProfilePage preferences form</td></tr>
+    <tr><td><code>POST/PATCH/GET /api/users/me/learning-progress(/:skill)</code></td><td>Dashboard Learning tab + SkillGapsPage</td></tr>
+    <tr><td><code>GET /api/users/me/personalized-recommendations/:resumeId</code></td><td>RecommendationsPage (authed)</td></tr>
+    <tr><td><code>GET /api/users/me/personalized-skill-gaps/:resumeId</code></td><td>SkillGapsPage (authed)</td></tr>
+    <tr><td><code>GET /api/users/me/progress-roadmap/:resumeId</code></td><td>AssistantPage Roadmap tab (authed)</td></tr>
+    <tr><td><code>GET /api/health</code></td><td>Optional status indicator in TopBar</td></tr>
+  </table>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>

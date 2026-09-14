@@ -13,6 +13,7 @@
     "test:user": "ts-node-dev --transpile-only src/services/user.service.test.ts",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "seed:jobs": "ts-node-dev --transpile-only src/scripts/seedJobs.ts",
+    "seed:demo": "ts-node-dev --transpile-only src/scripts/seedDemoUser.ts",
     "embeddings:jobs": "ts-node-dev --transpile-only src/scripts/generateJobEmbeddings.ts",
     "embeddings:knowledge": "ts-node-dev --transpile-only src/scripts/generateKnowledgeEmbeddings.ts",
     "evaluate:recommendations": "ts-node-dev --transpile-only src/scripts/evaluateRecommendations.ts",
