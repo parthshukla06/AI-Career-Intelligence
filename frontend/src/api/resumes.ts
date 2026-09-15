@@ -57,6 +57,21 @@ export async function getMyResume(): Promise<IResume> {
 }
 
 /**
+ * DELETE /api/resumes/me
+ *
+ * Deletes all resumes belonging to the currently authenticated user.
+ */
+export async function deleteMyResume(): Promise<void> {
+  const { data } = await apiClient.delete<ApiResponse<null>>(
+    "/api/resumes/me",
+  );
+
+  if (!data.success) {
+    throw new Error(data.message ?? "Unable to delete resume");
+  }
+}
+
+/**
  * GET /api/resumes/:id
  *
  * Fetches a previously uploaded resume document by ID.

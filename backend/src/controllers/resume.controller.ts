@@ -236,3 +236,37 @@ export const getResumeById = async (
     });
   }
 };
+
+export const deleteMyResume = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  if (!req.userId) {
+    res.status(401).json({
+      success: false,
+      message: "Authentication required",
+    });
+    return;
+  }
+
+  try {
+    const result = await Resume.deleteMany({
+      userId: new mongoose.Types.ObjectId(req.userId),
+    });
+
+    res.status(200).json({
+      success: true,
+      message:
+        result.deletedCount > 0
+          ? "Resume deleted successfully"
+          : "No resume found to delete",
+    });
+  } catch (error) {
+    console.error("Failed to delete user's resume:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Unable to delete resume",
+    });
+  }
+};

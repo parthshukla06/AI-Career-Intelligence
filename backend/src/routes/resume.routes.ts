@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import multer from "multer";
 
 import {
+  deleteMyResume,
   getMyResume,
   getResumeById,
   uploadResume,
@@ -70,10 +71,16 @@ const uploadSingleResume = (
 // All resume routes require authentication
 router.use(requireAuth);
 
+// Upload a new resume
 router.post("/upload", uploadSingleResume, uploadResume);
 
+// Get the current user's latest resume
 router.get("/me", getMyResume);
 
+// Delete the current user's resume(s)
+router.delete("/me", deleteMyResume);
+
+// Get a specific resume belonging to the current user
 router.get("/:id", getResumeById);
 
 export default router;

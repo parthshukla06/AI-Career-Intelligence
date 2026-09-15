@@ -4,7 +4,12 @@ import { CheckCircle2, RefreshCw, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
 
-import { uploadResume, getResume, getMyResume } from "@/api/resumes";
+import {
+  uploadResume,
+  getResume,
+  getMyResume,
+  deleteMyResume,
+} from "@/api/resumes";
 import { useAuthStore } from "@/store/authStore";
 import { queryClient } from "@/lib/queryClient";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -15,9 +20,6 @@ import { SkeletonCard } from "@/components/common/SkeletonCard";
 import { ErrorState } from "@/components/common/ErrorState";
 import type { ResumeUploadData } from "@/types/resume";
 
-/**
- * Map backend HTTP status codes to user-friendly messages.
- */
 function mapUploadError(error: unknown): string {
   if (!axios.isAxiosError(error)) {
     return "Unable to reach the server. Check your connection and try again.";
@@ -54,23 +56,15 @@ function mapUploadError(error: unknown): string {
 export function ResumePage() {
   const { resumeId, setResumeId } = useAuthStore();
 
-  // ── upload state ────────────────────────────────────────────────────────────
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | undefined>(
     undefined,
   );
   const [serverError, setServerError] = useState<string | null>(null);
-
-  // Hold the result from a fresh upload so we skip the GET request
-  // in the same session.
   const [freshUpload, setFreshUpload] = useState<ResumeUploadData | null>(null);
+  const [isReplacing, setIsReplacing] = useState(false);
 
-  // ── Restore resume from backend when no resumeId exists ─────────────────────
-  //
-  // This is what makes:
-  // logout → login again → resume automatically return
-  //
-  // The backend identifies the resume using the authenticated user's JWT.
+  // Restore user's resume after login/logout/login.
   const {
     data: myResume,
     isLoading: isLoadingMyResume,
@@ -78,20 +72,18 @@ export function ResumePage() {
   } = useQuery({
     queryKey: ["my-resume"],
     queryFn: getMyResume,
-    enabled: !resumeId && !freshUpload && !isUploading,
+    enabled: !resumeId && !freshUpload && !isUploading && !isReplacing,
     retry: false,
     staleTime: 1000 * 60 * 10,
   });
 
-  // When the backend finds the user's resume, restore its ID
-  // into Zustand so the rest of the application can use it.
   useEffect(() => {
     if (myResume?._id && !resumeId) {
       setResumeId(String(myResume._id));
     }
   }, [myResume, resumeId, setResumeId]);
 
-  // ── Fetch existing resume when resumeId is already in store ─────────────────
+  // Fetch resume when its ID is already available.
   const {
     data: fetchedResume,
     isLoading: isLoadingExisting,
@@ -100,12 +92,12 @@ export function ResumePage() {
   } = useQuery({
     queryKey: ["resume", resumeId],
     queryFn: () => getResume(resumeId!),
-    enabled: !!resumeId && !freshUpload && !isUploading,
+    enabled: !!resumeId && !freshUpload && !isUploading && !isReplacing,
     retry: 1,
     staleTime: 1000 * 60 * 10,
   });
 
-  // ── Upload handler ──────────────────────────────────────────────────────────
+  // Upload new resume.
   const handleUpload = async (file: File) => {
     setIsUploading(true);
     setUploadProgress(0);
@@ -116,14 +108,9 @@ export function ResumePage() {
         setUploadProgress(percent);
       });
 
-      // Store the new resume ID.
       setResumeId(result.id);
-
-      // Keep upload result locally so we can display it without
-      // a second GET request.
       setFreshUpload(result);
 
-      // Update "my-resume" cache with the newly uploaded resume.
       queryClient.setQueryData(["my-resume"], {
         _id: result.id,
         originalFilename: result.originalFilename,
@@ -135,7 +122,6 @@ export function ResumePage() {
         updatedAt: new Date().toISOString(),
       });
 
-      // Pre-populate the individual resume query cache.
       queryClient.setQueryData(["resume", result.id], {
         _id: result.id,
         originalFilename: result.originalFilename,
@@ -156,24 +142,48 @@ export function ResumePage() {
     }
   };
 
-  // ── Replace resume ───────────────────────────────────────────────────────────
-  const handleReplaceResume = () => {
-    setResumeId(null);
-    setFreshUpload(null);
+  // Replace resume:
+  // 1. Delete old resume from backend
+  // 2. Clear local state/cache
+  // 3. Show upload screen
+  const handleReplaceResume = async () => {
+    if (isReplacing) return;
+
+    setIsReplacing(true);
     setServerError(null);
 
-    if (resumeId) {
-      queryClient.removeQueries({
-        queryKey: ["resume", resumeId],
-      });
-    }
+    try {
+      await deleteMyResume();
 
-    queryClient.removeQueries({
-      queryKey: ["my-resume"],
-    });
+      if (resumeId) {
+        queryClient.removeQueries({
+          queryKey: ["resume", resumeId],
+        });
+      }
+
+      queryClient.removeQueries({
+        queryKey: ["my-resume"],
+      });
+
+      setResumeId(null);
+      setFreshUpload(null);
+
+      toast.success("Previous resume removed. Upload your new resume.");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = (error.response?.data as { message?: string })?.message;
+
+        setServerError(
+          message ?? "Unable to remove your previous resume. Please try again.",
+        );
+      } else {
+        setServerError("Unable to remove your previous resume. Please try again.");
+      }
+    } finally {
+      setIsReplacing(false);
+    }
   };
 
-  // ── Derive which profile to display ─────────────────────────────────────────
   const displayData = freshUpload
     ? {
         profile: freshUpload.candidateProfile,
@@ -194,10 +204,8 @@ export function ResumePage() {
           }
         : null;
 
-  // ── Render states ───────────────────────────────────────────────────────────
-
-  // 1. No resumeId — check backend for existing resume first.
-  if (!resumeId && isLoadingMyResume) {
+  // Loading saved resume.
+  if (!resumeId && isLoadingMyResume && !isReplacing) {
     return (
       <div>
         <PageHeader
@@ -214,7 +222,7 @@ export function ResumePage() {
     );
   }
 
-  // 2. No resume found for this account — show upload dropzone.
+  // No resume — show upload screen.
   if (!resumeId && (isMyResumeError || !myResume)) {
     return (
       <div>
@@ -235,7 +243,7 @@ export function ResumePage() {
     );
   }
 
-  // 3. Resume is being uploaded.
+  // Uploading.
   if (isUploading) {
     return (
       <div>
@@ -256,7 +264,7 @@ export function ResumePage() {
     );
   }
 
-  // 4. Existing resume is loading.
+  // Loading existing resume.
   if (resumeId && isLoadingExisting && !displayData) {
     return (
       <div>
@@ -274,7 +282,7 @@ export function ResumePage() {
     );
   }
 
-  // 5. Resume fetch failed.
+  // Existing resume fetch failed.
   if (resumeId && isErrorExisting && !displayData) {
     return (
       <div>
@@ -289,16 +297,17 @@ export function ResumePage() {
           <Button
             variant="outline"
             onClick={handleReplaceResume}
+            disabled={isReplacing}
           >
             <UploadCloud className="mr-2 h-4 w-4" />
-            Upload a new resume
+            {isReplacing ? "Removing..." : "Upload a new resume"}
           </Button>
         </div>
       </div>
     );
   }
 
-  // 6. Profile loaded successfully.
+  // Profile loaded.
   if (displayData) {
     return (
       <div>
@@ -310,14 +319,18 @@ export function ResumePage() {
               variant="outline"
               size="sm"
               onClick={handleReplaceResume}
+              disabled={isReplacing}
             >
-              <RefreshCw className="mr-2 h-3.5 w-3.5" />
-              Replace resume
+              <RefreshCw
+                className={`mr-2 h-3.5 w-3.5 ${
+                  isReplacing ? "animate-spin" : ""
+                }`}
+              />
+              {isReplacing ? "Removing..." : "Replace resume"}
             </Button>
           }
         />
 
-        {/* Success banner — only shown after a fresh upload */}
         {displayData.isFresh && (
           <div className="mb-6 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3">
             <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
@@ -345,7 +358,7 @@ export function ResumePage() {
     );
   }
 
-  // 7. Fallback.
+  // Fallback.
   return (
     <div>
       <PageHeader title="Resume" />
