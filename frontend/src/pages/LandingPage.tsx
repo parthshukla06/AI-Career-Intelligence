@@ -39,6 +39,14 @@ const features = [
 export function LandingPage() {
   const { token, resumeId } = useAuthStore();
 
+  const resumeTarget = token
+    ? resumeId
+      ? "/career"
+      : "/resume"
+    : "/login";
+
+  const jobsTarget = token ? "/jobs" : "/login";
+
   return (
     <div className="flex flex-col">
       {/* Hero */}
@@ -48,33 +56,31 @@ export function LandingPage() {
             <BrainCircuit className="h-3.5 w-3.5" />
             AI-Powered Career Intelligence
           </div>
+
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-6 leading-tight">
             Accelerate your career with{" "}
             <span className="text-primary">intelligent guidance</span>
           </h1>
+
           <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
             Upload your resume, discover matching jobs, understand your skill
             gaps, and get an AI-powered roadmap to your next role.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            {resumeId ? (
-              <Button size="lg" asChild>
-                <Link to="/career">
-                  View Career Intelligence
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            ) : (
-              <Button size="lg" asChild>
-                <Link to="/resume">
-                  Upload your resume
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            )}
-            <Button size="lg" variant="outline" asChild>
-              <Link to="/jobs">Browse jobs</Link>
+            <Button size="lg" asChild>
+              <Link to={resumeTarget}>
+                {token && resumeId
+                  ? "View Career Intelligence"
+                  : "Upload your resume"}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
+
+            <Button size="lg" variant="outline" asChild>
+              <Link to={jobsTarget}>Browse jobs</Link>
+            </Button>
+
             {!token && (
               <Button size="lg" variant="ghost" asChild>
                 <Link to="/register">Create free account</Link>
@@ -90,6 +96,7 @@ export function LandingPage() {
           <h2 className="text-center text-2xl font-bold text-foreground mb-10">
             Everything you need to land your next role
           </h2>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {features.map(({ icon: Icon, title, description }) => (
               <div
@@ -99,8 +106,12 @@ export function LandingPage() {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                   <Icon className="h-5 w-5 text-primary" />
                 </div>
+
                 <h3 className="font-semibold text-foreground">{title}</h3>
-                <p className="text-sm text-muted-foreground">{description}</p>
+
+                <p className="text-sm text-muted-foreground">
+                  {description}
+                </p>
               </div>
             ))}
           </div>
@@ -113,10 +124,12 @@ export function LandingPage() {
           <h2 className="text-xl font-bold text-foreground mb-3">
             Ready to get started?
           </h2>
+
           <p className="text-sm text-muted-foreground mb-6">
             Create a free account to unlock personalized recommendations,
             application tracking, and your learning progress dashboard.
           </p>
+
           <Button asChild>
             <Link to="/register">
               Get started for free
